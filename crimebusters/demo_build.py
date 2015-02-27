@@ -32,7 +32,11 @@ class BuildEventPlanner(object):
 		# Not sure if we want shuffle = True before splitting
 		kf = KFold(n, k, indices = True, random_state=0)
 		
-		##The featureset output referenced in the train method should then be the train set
+		# kf now contains a train and test set which can be viewed by running the following code:
+#		for train_index, test_index in kf:
+#...			print("TRAIN: %s TEST: %s" % (train_index, test_index))
+#...    		X_train, X_test = X[train_index], X[test_index]
+#...    		y_train, y_test = y[train_index], y[test_index]
 	
 	def train(self, featureset=None):
         """
@@ -41,6 +45,7 @@ class BuildEventPlanner(object):
         self.featureset() but the input parameter 
         allows for reuse.
         """
+		# Input feature set should be X_train, y_train from above
         featureset = featureset or self.featureset()
         pass
 		
@@ -56,6 +61,13 @@ class BuildEventPlanner(object):
         A function to test the accuracy of the 
         model.
         """
+		# A good function for testing the accuracy of a model
+		# appears to be cross_validation.cross_val_score.
+		# This is an example of how to use it below:
+		clf = svm.SVC(kernel='linear', C=1)
+		scores = cross_validation.cross_val_score(
+ ...    		clf, X_train, y_train, cv=k) # where k = number of folds
+
         pass
     
     def get_output_paths(self):
